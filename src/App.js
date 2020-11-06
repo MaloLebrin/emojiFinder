@@ -1,11 +1,34 @@
-import React from "react";
-import "./App.css";
+import React, { useState } from "react";
+import "./App.scss";
+import Data from "./data/data.json"
+import Search from "./search/Search"
+import EmojiLine from "./emoji/EmojiLine"
+import Header from "./header/Header"
 
-function App() {
+
+const App = () => {
+  const [results, setResults] = useState(Data.slice(0, 10));
+
+  const searchEmoji = (event) => {
+    let tab = [];
+    for (let i = 0; i < Data.length; i++) {
+      if (Data[i].keywords.indexOf(event.target.value) !== -1) {
+        tab.push(Data[i])
+      }
+
+    }
+    return setResults(tab)
+  }
   return (
-    <div>
-      Hello from <a href="https://www.lereacteur.io">Le Reacteur !</a>
-    </div>
+    <main className="container">
+      <Header title="😎 Emoji Search 😎" />
+      <Search searchResult={searchEmoji} />
+      {
+        results.map((result, index) => {
+          return <EmojiLine key={index} emoji={result} />
+        })
+      }
+    </main>
   );
 }
 
